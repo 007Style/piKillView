@@ -13,6 +13,7 @@ jobs:
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: macos-arm64
@@ -21,7 +22,7 @@ jobs:
             goarch: arm64
             cgo_enabled: "1"
             cc: ""
-            apt_pkgs: ""
+            extra_flags: ""
             ext: ""
 
           - name: macos-amd64
@@ -30,34 +31,34 @@ jobs:
             goarch: amd64
             cgo_enabled: "1"
             cc: ""
-            apt_pkgs: ""
+            extra_flags: ""
             ext: ""
 
           - name: linux-amd64
-            runner: ubuntu-latest
+            runner: ubuntu-22.04
             goos: linux
             goarch: amd64
             cgo_enabled: "1"
             cc: ""
-            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev"
+            extra_flags: ""
             ext: ""
 
           - name: linux-arm64
-            runner: ubuntu-latest
+            runner: ubuntu-22.04-arm
             goos: linux
             goarch: arm64
             cgo_enabled: "1"
-            cc: aarch64-linux-gnu-gcc
-            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev gcc-aarch64-linux-gnu"
+            cc: ""
+            extra_flags: ""
             ext: ""
 
           - name: windows-amd64
-            runner: ubuntu-latest
+            runner: windows-latest
             goos: windows
             goarch: amd64
             cgo_enabled: "1"
-            cc: x86_64-w64-mingw32-gcc
-            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev gcc-mingw-w64"
+            cc: ""
+            extra_flags: ""
             ext: ".exe"
 
     steps:
@@ -69,19 +70,48 @@ jobs:
         with:
           go-version: '1.23'
 
-      - name: Install system dependencies
-        if: matrix.apt_pkgs != ''
-        run: sudo apt-get update && sudo apt-get install -y ${{ matrix.apt_pkgs }}
+      - name: Install Linux dependencies
+        if: matrix.goos == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgl1-mesa-dev \
+            xorg-dev \
+            libwayland-dev \
+            wayland-protocols \
+            libxkbcommon-dev \
+            pkg-config
 
-      - name: Build binary
+      - name: Install Windows dependencies (MSYS2/GCC)
+        if: matrix.goos == 'windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-pkg-config
+
+      - name: Build binary (non-Windows)
+        if: matrix.goos != 'windows'
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: ${{ matrix.cgo_enabled }}
-          CC: ${{ matrix.cc }}
         run: |
           mkdir -p dist
           go build -ldflags "-s -w" -o dist/piKillView-${{ matrix.name }}${{ matrix.ext }} .
+
+      - name: Build binary (Windows)
+        if: matrix.goos == 'windows'
+        shell: msys2 {0}
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: "1"
+        run: |
+          mkdir -p dist
+          go build -ldflags "-s -w -H=windowsgui" -o dist/piKillView-${{ matrix.name }}.exe .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -104,12 +134,14 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - name: List artifacts
+        run: ls -lh dist/
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${GITHUB_REF_NAME}"
-          NOTES="piKillView ${TAG} — From the minds of IBM Bob & Daneyand"
           gh release create "$TAG" dist/* \
             --title "piKillView ${TAG}" \
-            --notes "${NOTES}"
+            --notes "piKillView ${TAG} — From the minds of IBM Bob & Daneyand"
