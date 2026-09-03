@@ -8,7 +8,7 @@ import (
 	"github.com/007Style/piKillView/pkg/engine"
 )
 
-const AppTitle = "piKillView v1.0 — From the minds of IBM Bob & Daneyand"
+const AppTitle = "piKillView v1.1 — From the minds of IBM Bob & Daneyand"
 
 // AppComponents holds all major UI widgets so main.go can wire callbacks.
 type AppComponents struct {
@@ -58,6 +58,11 @@ func NewMainWindow(a fyne.App, eng *engine.Engine, comp *AppComponents) fyne.Win
 		digitView.AppendDigits("") // trigger refresh
 	}
 
+	// ── About button ──
+	aboutBtn := widget.NewButton("π About", func() {
+		ShowAboutDialog(w)
+	})
+
 	// ── Theme toggle button ──
 	themeBtn := widget.NewButton("☾", func() {
 		ToggleTheme(a, &comp.CurrentTheme)
@@ -77,7 +82,8 @@ func NewMainWindow(a fyne.App, eng *engine.Engine, comp *AppComponents) fyne.Win
 	hintLabel := widget.NewLabel("Space: Start/Stop  |  ⌘F: Search  |  ⌘S: Snapshot")
 	hintLabel.TextStyle = fyne.TextStyle{Monospace: true}
 
-	statusBar := container.NewBorder(nil, nil, logToggle, themeBtn, hintLabel)
+	statusBar := container.NewBorder(nil, nil, logToggle,
+		container.NewHBox(aboutBtn, themeBtn), hintLabel)
 
 	// ── Bottom strip: trivia + status bar + session log ──
 	bottom := container.NewVBox(

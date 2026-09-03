@@ -139,6 +139,8 @@ func (sp *StatsPanel) UpdateCount(n int64) {
 }
 
 // UpdateWorker updates the worker list for the given worker stat.
+// Called from the 30fps flush ticker — safe to call Refresh() here since
+// it's already coalesced (at most once per frame per batch of workers).
 func (sp *StatsPanel) UpdateWorker(stat engine.WorkerStat) {
 	sp.mu.Lock()
 	// Grow slice if needed.
@@ -148,6 +150,8 @@ func (sp *StatsPanel) UpdateWorker(stat engine.WorkerStat) {
 	sp.workers[stat.WorkerID].Terms = stat.TermsComputed
 	sp.workers[stat.WorkerID].Active = stat.Active
 	sp.mu.Unlock()
+	// Refresh is cheap now — the flush ticker already batches worker updates
+	// so this is called at most once per frame regardless of worker count.
 	sp.workerList.Refresh()
 }
 
