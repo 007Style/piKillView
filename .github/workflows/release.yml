@@ -39,7 +39,7 @@ jobs:
             goarch: amd64
             cgo_enabled: "1"
             cc: ""
-            apt_pkgs: "libgl1-mesa-dev xorg-dev"
+            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev"
             ext: ""
 
           - name: linux-arm64
@@ -48,7 +48,7 @@ jobs:
             goarch: arm64
             cgo_enabled: "1"
             cc: aarch64-linux-gnu-gcc
-            apt_pkgs: "libgl1-mesa-dev xorg-dev gcc-aarch64-linux-gnu"
+            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev gcc-aarch64-linux-gnu"
             ext: ""
 
           - name: windows-amd64
@@ -57,7 +57,7 @@ jobs:
             goarch: amd64
             cgo_enabled: "1"
             cc: x86_64-w64-mingw32-gcc
-            apt_pkgs: "libgl1-mesa-dev xorg-dev gcc-mingw-w64"
+            apt_pkgs: "libgl1-mesa-dev xorg-dev libwayland-dev wayland-protocols libxkbcommon-dev gcc-mingw-w64"
             ext: ".exe"
 
     steps:
