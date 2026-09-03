@@ -197,7 +197,7 @@ named placeholder containers that later sub-tasks will populate.
 - `container.NewBorder(top, bottom, left, right, center)` for outer frame
 - Fyne keyboard shortcuts: `canvas.AddShortcut(shortcut, handler)`
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -228,7 +228,7 @@ named placeholder containers that later sub-tasks will populate.
 - Rain head pixel: bright green `#00FF41`; trail: `#003B00` fading to black
 - The `golang.org/x/image` package is a required dep for bitmap font rendering
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -263,7 +263,7 @@ Resume from file, precision lock, auto-save interval.
 - `dialog.NewFileSave(func(fyne.URIWriteCloser, error), fyne.Window)`
 - Numeric entry validation: `widget.Entry` with `Validator: validation.NewRegexp("^[0-9]*$", "digits only")`
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -298,7 +298,7 @@ Scroll range display. Selectable for copy. Background search with highlight.
 - `fyne.Theme` color names vs `color.RGBA` — use `color.RGBA` directly in `RichTextStyle{Color: c}`
 - 10MB = ~10M digits; at ~50 digits per segment (same color run) = ~200K segments max — acceptable
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -333,7 +333,7 @@ round, speed gauge, memory usage, per-worker pulse dots, digits/sec sparkline.
 - `fyne.Do(func())` required for all UI updates from goroutines (Fyne v2.5+)
 - Worker count up to 48 — `widget.List` is virtualised, handles this fine
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -363,7 +363,7 @@ toward uniform 10% distribution — watching it balance is mesmerizing.
 - Bar chart math: `barHeight = int(float64(imgH-labelSpace) * float64(counts[d]) / float64(total))`
 - Reference line at `y = imgH - labelSpace - int(0.10 * float64(imgH-labelSpace))`
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -391,7 +391,7 @@ toward uniform 10% distribution — watching it balance is mesmerizing.
 - `gopsutil/v3/cpu` — `Percent(interval, percpu bool) ([]float64, error)`: pass `interval=0` for non-blocking (returns since last call)
 - Colors: green `#00C853`, yellow `#FFD600`, red `#D50000`
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -423,7 +423,7 @@ goroutine. Matches highlighted in the digit view. Includes "Find my birthday" sh
 - Run in `go func()` with `resultCh chan []int`; UI reads from channel via `fyne.Do`
 - `digitView.Buffer()` returns a copy of the current ring buffer for search to operate on
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -451,7 +451,7 @@ goroutine. Matches highlighted in the digit view. Includes "Find my birthday" sh
 - `canvas.Text.Color` alpha channel for fade
 - Overlay: `container.NewStack` with digit view + toast on top
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -480,7 +480,7 @@ goroutine. Matches highlighted in the digit view. Includes "Find my birthday" sh
 - Same ticker goroutine pattern as header rain
 - Ticker strip height: ~32px, full window width
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -508,7 +508,7 @@ goroutine. Matches highlighted in the digit view. Includes "Find my birthday" sh
 - Monospace: `fyne.TextStyle{Monospace: true}` in list item renderer
 - Log should be written to in-memory only (not persisted to disk unless user exports)
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
@@ -545,7 +545,7 @@ Add all keyboard shortcuts. Final visual polish pass.
 - Channel fan-out: read once from source channel, write to multiple internal channels or call methods directly under `fyne.Do`
 - `context.WithCancel` passed to engine; cancel on window close
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
