@@ -67,7 +67,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.23'
 
       - name: Install system dependencies
         if: matrix.apt_pkgs != ''
@@ -109,16 +109,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${GITHUB_REF_NAME}"
+          NOTES="piKillView ${TAG} — From the minds of IBM Bob & Daneyand"
           gh release create "$TAG" dist/* \
-            --title "piKillView $TAG" \
-            --notes "piKillView $TAG — From the minds of IBM Bob & Daneyand
-
-## Binaries
-| Platform | File |
-|---|---|
-| macOS arm64  | piKillView-macos-arm64  |
-| macOS amd64  | piKillView-macos-amd64  |
-| Linux amd64  | piKillView-linux-amd64  |
-| Linux arm64  | piKillView-linux-arm64  |
-| Windows amd64 | piKillView-windows-amd64.exe |
-"
+            --title "piKillView ${TAG}" \
+            --notes "${NOTES}"
