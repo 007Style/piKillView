@@ -561,18 +561,18 @@ section. Create GitHub repo, push, tag v1.0, GitHub Actions auto-builds and atta
 - Release notes include full feature list and download table
 
 **Todo List:**
-- [ ] Write `README.md`
-- [ ] `gh repo create piKillView --public --source=. --remote=origin`
-- [ ] `git tag v1.0 && git push origin main --tags`
-- [ ] Monitor GitHub Actions run via `gh run watch`
-- [ ] Verify release artifacts at `https://github.com/007Style/piKillView/releases/tag/v1.0`
+- [x] Write `README.md`
+- [x] `gh repo create piKillView --public --source=. --remote=origin`
+- [x] `git tag v1.0 && git push origin main --tags`
+- [x] Monitor GitHub Actions run via `gh run watch`
+- [x] Verify release artifacts at `https://github.com/007Style/piKillView/releases/tag/v1.0`
 
 **Relevant Context:**
 - README should reference piKill as the spiritual predecessor
 - Screenshot section: use placeholder text "*(screenshot)*" — actual screenshots added after first run
 - GitHub Actions workflow file already written in Sub-Task 1
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
