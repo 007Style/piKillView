@@ -160,7 +160,7 @@ with a clean API the UI can drive. Engine emits three channels the UI reads inde
 - Use `context.WithCancel` for clean stop propagation into worker goroutines
 - Module: `github.com/007Style/piKillView/pkg/engine`
 
-**Status:** [ ] pending
+**Status:** [x] done
 
 ---
 
