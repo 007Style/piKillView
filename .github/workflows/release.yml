@@ -104,14 +104,19 @@ jobs:
 
       - name: Build binary (Windows)
         if: matrix.goos == 'windows'
-        shell: msys2 {0}
         env:
           GOOS: windows
           GOARCH: amd64
           CGO_ENABLED: "1"
+          CC: "x86_64-w64-mingw32-gcc"
         run: |
-          mkdir -p dist
-          go build -ldflags "-s -w -H=windowsgui" -o dist/piKillView-${{ matrix.name }}.exe .
+          $env:PATH = "C:\msys64\mingw64\bin;" + $env:PATH
+          $env:CGO_ENABLED = "1"
+          $env:GOOS = "windows"
+          $env:GOARCH = "amd64"
+          $env:CC = "x86_64-w64-mingw32-gcc"
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          go build -ldflags "-s -w -H=windowsgui" -o dist/piKillView-windows-amd64.exe .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
